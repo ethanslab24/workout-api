@@ -14,4 +14,20 @@ public class Workout {
         this.weight = weight;
         this.date = date;
     }
+
+    public String getExerciseName(){
+        return this.exerciseName;
+    }
+    public int getSets(){
+        return this.sets;
+    }
+    public int getReps(){
+        return this.reps;
+    }
+    public double getWeight(){
+        return this.weight;
+    }
+    public String getDate(){
+        return this.date;
+    }
 }
