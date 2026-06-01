@@ -1,6 +1,7 @@
 package com.edue.workoutapi;
 
 public class Workout {
+    private int id;
     private String exerciseName;
     private int sets;
     private int reps;
@@ -15,24 +16,38 @@ public class Workout {
         this.date = date;
     }
 
+    //no arg constructor
     public Workout(){}
 
+    //getters
+    public int getId(){
+        return this.id;
+    }
+    
     public String getExerciseName(){
         return this.exerciseName;
     }
     public int getSets(){
         return this.sets;
     }
+    
     public int getReps(){
         return this.reps;
     }
+    
     public double getWeight(){
         return this.weight;
     }
+    
     public String getDate(){
         return this.date;
     }
 
+    //setters
+     public void setId(int id) {
+        this.id = id;
+    }
+    
     public void setExerciseName(String exerciseName) {
         this.exerciseName = exerciseName;
     }
