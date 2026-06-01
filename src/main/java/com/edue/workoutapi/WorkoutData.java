@@ -5,11 +5,12 @@ import java.util.ArrayList;
 public class WorkoutData{
     private ArrayList<Workout> workouts = new ArrayList<>();
     private int nextId = 1;
+    private Workout toDel;
 
     public WorkoutData(){
-       addWorkout(new Workout("Bench Press", 4, 15, 90, "05-30-26"));
-       addWorkout(new Workout("Squats", 6, 8, 60, "05-30-26"));
-       addWorkout(new Workout("Shoulder Press", 4, 18, 60, "05-30-26"));
+        addWorkout(new Workout("Bench Press", 4, 15, 90, "05-30-26"));
+        addWorkout(new Workout("Squats", 6, 8, 60, "05-30-26"));
+        addWorkout(new Workout("Shoulder Press", 4, 18, 60, "05-30-26"));
     }
 
     public ArrayList<Workout> getAllWorkouts(){
@@ -29,6 +30,15 @@ public class WorkoutData{
         workout.setId(nextId);
         nextId++;
         workouts.add(workout);
+    }
+
+    public boolean deleteWorkoutById(int id){
+        Workout workoutToDel = getWorkoutById(id);
+        if(workoutToDel == null)
+           return false;
+        
+        workouts.remove(workoutToDel);
+        return true;
     }
 }
 

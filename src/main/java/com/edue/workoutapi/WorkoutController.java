@@ -2,6 +2,7 @@ package com.edue.workoutapi;
 
 import java.util.ArrayList;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,5 +28,10 @@ public class WorkoutController {
     public Workout addWorkout(@RequestBody Workout w){
         workoutData.addWorkout(w);
         return w;
+    }
+
+    @DeleteMapping("/workouts/{id}")
+    public boolean deleteWorkoutById(@PathVariable int id){
+        return workoutData.deleteWorkoutById(id);
     }
 }
