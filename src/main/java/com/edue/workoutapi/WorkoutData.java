@@ -18,6 +18,10 @@ public class WorkoutData{
     public ArrayList<Workout> getAllWorkouts(){
         return workouts;
     }
+
+    public void addWorkout(Workout workout){
+        workouts.add(workout);
+    }
 }
 
 

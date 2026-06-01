@@ -15,6 +15,8 @@ public class Workout {
         this.date = date;
     }
 
+    public Workout(){}
+
     public String getExerciseName(){
         return this.exerciseName;
     }
@@ -29,5 +31,25 @@ public class Workout {
     }
     public String getDate(){
         return this.date;
+    }
+
+    public void setExerciseName(String exerciseName) {
+        this.exerciseName = exerciseName;
+    }
+
+    public void setSets(int sets) {
+        this.sets = sets;
+    }
+
+    public void setReps(int reps) {
+        this.reps = reps;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
