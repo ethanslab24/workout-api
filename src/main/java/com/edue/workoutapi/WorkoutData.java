@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class WorkoutData{
     private ArrayList<Workout> workouts = new ArrayList<>();
     private int nextId = 1;
-    private Workout toDel;
 
     public WorkoutData(){
         addWorkout(new Workout("Bench Press", 4, 15, 90, "05-30-26"));
@@ -38,6 +37,18 @@ public class WorkoutData{
            return false;
         
         workouts.remove(workoutToDel);
+        return true;
+    }
+
+    public boolean editWorkoutById(int id, Workout w){
+        Workout workoutToEdit = getWorkoutById(id);
+        if(workoutToEdit == null)
+           return false;
+        workoutToEdit.setExerciseName(w.getExerciseName());
+        workoutToEdit.setSets(w.getSets());
+        workoutToEdit.setReps(w.getReps());
+        workoutToEdit.setWeight(w.getWeight());
+        workoutToEdit.setDate(w.getDate());
         return true;
     }
 }
