@@ -1,7 +1,16 @@
 package com.edue.workoutapi;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+@Entity
 public class Workout {
+    
+    @Id
+    @GeneratedValue
     private int id;
+    
     private String exerciseName;
     private int sets;
     private int reps;
