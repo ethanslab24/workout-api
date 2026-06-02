@@ -1,6 +1,6 @@
 package com.edue.workoutapi;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,32 +13,51 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class WorkoutController {
 
-    private WorkoutData workoutData = new WorkoutData();
+    private final WorkoutRepository workoutRepository;
+
+    public WorkoutController(WorkoutRepository workoutRepository){
+        this.workoutRepository = workoutRepository; 
+    }
 
     @GetMapping("/workouts")
-    public ArrayList<Workout> getWorkouts() {
-        return workoutData.getAllWorkouts();
+    public List<Workout> getAllWorkouts() {
+        return workoutRepository.findAll(); 
     }
 
     @GetMapping("/workouts/{id}")
-    public Workout getWorkoutById(@PathVariable int id){
-        return workoutData.getWorkoutById(id);
+    public Workout findWorkoutById(@PathVariable int id) {
+        return workoutRepository.findById(id).orElse(null);
     }
 
     @PostMapping("/workouts")
-    public Workout addWorkout(@RequestBody Workout w){
-        workoutData.addWorkout(w);
-        return w;
+    public Workout createWorkout(@RequestBody Workout workout) {
+        return workoutRepository.save(workout);
     }
 
     @DeleteMapping("/workouts/{id}")
     public boolean deleteWorkoutById(@PathVariable int id){
-        return workoutData.deleteWorkoutById(id);
+        Workout workoutToDel = workoutRepository.findById(id).orElse(null);
+        if(workoutToDel == null)
+           return false;
+        workoutRepository.delete(workoutToDel);
+        return true;
     }
 
     @PutMapping("/workouts/{id}")
     public boolean editWorkoutById(@PathVariable int id, @RequestBody Workout w){
-        return workoutData.editWorkoutById(id, w);
+        Workout workoutToEdit = workoutRepository.findById(id).orElse(null);
+        if(workoutToEdit == null)
+           return false;
+
+        workoutToEdit.setExerciseName(w.getExerciseName());
+        workoutToEdit.setSets(w.getSets());
+        workoutToEdit.setReps(w.getReps());
+        workoutToEdit.setWeight(w.getWeight());
+        workoutToEdit.setDate(w.getDate());
+
+        workoutRepository.save(workoutToEdit);
+        
+        return true;
     }
 
 }
