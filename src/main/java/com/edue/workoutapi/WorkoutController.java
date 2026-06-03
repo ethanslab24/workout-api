@@ -1,7 +1,9 @@
 package com.edue.workoutapi;
 
+import java.net.URI;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,29 +27,34 @@ public class WorkoutController {
     }
 
     @GetMapping("/workouts/{id}")
-    public Workout findWorkoutById(@PathVariable int id) {
-        return workoutRepository.findById(id).orElse(null);
+    public ResponseEntity<Workout> findWorkoutById(@PathVariable int id) {
+        Workout workout = workoutRepository.findById(id).orElse(null);
+        if(workout == null) {
+           return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(workout);
     }
 
     @PostMapping("/workouts")
-    public Workout createWorkout(@RequestBody Workout workout) {
-        return workoutRepository.save(workout);
+    public ResponseEntity<Workout> createWorkout(@RequestBody Workout workout) {
+        Workout savedWorkout =  workoutRepository.save(workout);
+        return ResponseEntity.created(URI.create("/workouts/" + savedWorkout.getId())).body(savedWorkout);
     }
 
     @DeleteMapping("/workouts/{id}")
-    public boolean deleteWorkoutById(@PathVariable int id){
+    public ResponseEntity<Void> deleteWorkoutById(@PathVariable int id){
         Workout workoutToDel = workoutRepository.findById(id).orElse(null);
         if(workoutToDel == null)
-           return false;
+           return ResponseEntity.notFound().build();
         workoutRepository.delete(workoutToDel);
-        return true;
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/workouts/{id}")
-    public boolean editWorkoutById(@PathVariable int id, @RequestBody Workout w){
+    public ResponseEntity<Workout>editWorkoutById(@PathVariable int id, @RequestBody Workout w){
         Workout workoutToEdit = workoutRepository.findById(id).orElse(null);
         if(workoutToEdit == null)
-           return false;
+           return ResponseEntity.notFound().build();
 
         workoutToEdit.setExerciseName(w.getExerciseName());
         workoutToEdit.setSets(w.getSets());
@@ -57,7 +64,7 @@ public class WorkoutController {
 
         workoutRepository.save(workoutToEdit);
         
-        return true;
+        return ResponseEntity.ok(workoutToEdit);
     }
 
 }
