@@ -3,6 +3,9 @@ package com.edue.workoutapi;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 public class Workout {
@@ -11,10 +14,15 @@ public class Workout {
     @GeneratedValue
     private int id;
     
+    @NotBlank
     private String exerciseName;
+    @Positive
     private int sets;
+    @Positive
     private int reps;
+    @PositiveOrZero
     private double weight;
+    @NotBlank
     private String date;
 
     public Workout(String exerciseName, int sets, int reps, double weight, String date){

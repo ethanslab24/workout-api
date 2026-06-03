@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class WorkoutController {
 
@@ -36,7 +38,7 @@ public class WorkoutController {
     }
 
     @PostMapping("/workouts")
-    public ResponseEntity<Workout> createWorkout(@RequestBody Workout workout) {
+    public ResponseEntity<Workout> createWorkout(@Valid @RequestBody Workout workout) {
         Workout savedWorkout =  workoutRepository.save(workout);
         return ResponseEntity.created(URI.create("/workouts/" + savedWorkout.getId())).body(savedWorkout);
     }
@@ -50,8 +52,9 @@ public class WorkoutController {
         return ResponseEntity.noContent().build();
     }
 
+    @Valid
     @PutMapping("/workouts/{id}")
-    public ResponseEntity<Workout>editWorkoutById(@PathVariable int id, @RequestBody Workout w){
+    public ResponseEntity<Workout>editWorkoutById(@PathVariable int id, @Valid @RequestBody Workout w){
         Workout workoutToEdit = workoutRepository.findById(id).orElse(null);
         if(workoutToEdit == null)
            return ResponseEntity.notFound().build();
