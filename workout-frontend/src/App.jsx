@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
+  const [workouts, setWorkouts] = useState([])
+  
   const [exerciseName, setExerciseName] = useState("")
   const [sets, setSets] = useState("")
   const [reps, setReps] = useState("")
   const [weight, setWeight] = useState("")
   const [date, setDate] = useState("")
-  const [workouts, setWorkouts] = useState([])
+  
 
   useEffect(() => {
     fetch('http://localhost:8080/workouts')
@@ -43,6 +45,17 @@ function App() {
       }
       return response.json()}).then(savedWorkout => {
       setWorkouts([...workouts, savedWorkout])})
+  }
+
+  function deleteWorkout(id) {
+    fetch(`http://localhost:8080/workouts/${id}`, {
+          method: 'DELETE'}
+    ).then(response => {
+      if(!response.ok){
+        throw new Error("Failed to delete workout")
+      }
+      setWorkouts(workouts.filter((workout) => workout.id !== id))
+    })
   }
   
   return (
@@ -96,6 +109,7 @@ function App() {
           <p>Reps: {workout.reps}</p>
           <p>Weight: {workout.weight}</p>
           <p>Date: {workout.date}</p>
+          <button onClick={() => deleteWorkout(workout.id)}>Delete</button>
           </div>
       ))}
       </section>
