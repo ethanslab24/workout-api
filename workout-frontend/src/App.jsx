@@ -9,6 +9,8 @@ function App() {
   const [reps, setReps] = useState("")
   const [weight, setWeight] = useState("")
   const [date, setDate] = useState("")
+
+  const [editingId, setEditingId] = useState(null)
   
 
   useEffect(() => {
@@ -35,17 +37,35 @@ function App() {
           date
     }
     console.log(addedWorkout)
-    fetch('http://localhost:8080/workouts', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(addedWorkout)
-    }).then(response => {
-      if (!response.ok) {
-          throw new Error("Failed to add workout")
-      }
-      return response.json()}).then(savedWorkout => {
-      setWorkouts([...workouts, savedWorkout])})
-  }
+    
+    if (editingId === null) {
+        fetch('http://localhost:8080/workouts', {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(addedWorkout)
+        }).then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to add workout")
+        }
+        return response.json()}).then(savedWorkout => {
+        setWorkouts([...workouts, savedWorkout])})
+    }else{
+        fetch(`http://localhost:8080/workouts/${editingId}`, {
+              method: 'PUT',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(addedWorkout)
+        }).then(response => {
+          if (!response.ok){
+              throw new Error("Failed to add workout")
+          }
+          return response.json()}).then(savedWorkout => {
+                 setWorkouts( workouts.map((workout) => workout.id === savedWorkout.id ? savedWorkout : workout
+                             )
+                )
+           setEditingId(null)})
+      }  
+    }
+  
 
   function deleteWorkout(id) {
     fetch(`http://localhost:8080/workouts/${id}`, {
@@ -56,6 +76,15 @@ function App() {
       }
       setWorkouts(workouts.filter((workout) => workout.id !== id))
     })
+  }
+
+  function editWorkout(workout){
+    setEditingId(workout.id)
+    setExerciseName(workout.exerciseName)
+    setSets(workout.sets)
+    setReps(workout.reps)
+    setWeight(workout.weight)
+    setDate(workout.date)
   }
   
   return (
@@ -109,6 +138,7 @@ function App() {
           <p>Reps: {workout.reps}</p>
           <p>Weight: {workout.weight}</p>
           <p>Date: {workout.date}</p>
+          <button onClick={()=> editWorkout(workout)}>Edit Workout</button>
           <button onClick={() => deleteWorkout(workout.id)}>Delete</button>
           </div>
       ))}
