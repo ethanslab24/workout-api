@@ -182,3 +182,23 @@
     border-right-color: var(--border);
   }
 }
+
+.workout-card {
+    border: 1px solid gray;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px auto;
+    width: 250px;
+}
+
+h3 {
+    margin-top: -5px;
+}
+
+input {
+    margin: 5px;
+}
+
+button {
+    margin: 5px;
+}
